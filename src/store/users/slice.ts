@@ -13,8 +13,8 @@ export interface UserPlusID extends User {
     id: string
 }
 
-//Nuestro initialState es un array de usuarios completos (UserPlusID) 
-const initialState: UserPlusID[] = [
+
+const defaultState =[
     {
         name: "Peter Doe",
         email: "peterd@gmail.com",
@@ -36,6 +36,17 @@ const initialState: UserPlusID[] = [
 
 ]
 
+//Nuestro initialState es un array de usuarios completos (UserPlusID) 
+const initialState: UserPlusID[] = (()=>{
+    const persistedState = localStorage.getItem("redux__State") //Leemos lo que hay en el LS
+
+    if (persistedState) {  //Si hay info en el LS lo mostramos, sino mostramos el 'defaultState'
+        return JSON.parse(persistedState).users;
+    }
+    return defaultState;
+})();
+
+
 
 
 //Los 'slice' (partes de ...) necesitan que les pasemos por lo menos nombre , estado inicial y los reducers que usen.
@@ -50,10 +61,15 @@ export const usersSlice = createSlice({
             const id = action.payload;
             //Devolvemos todo menos la ID obtenida
             return state.filter((user) => user.id !== id)
+        },
+
+        addNewUser: (state, action:PayloadAction<User>) => { 
+            const id = crypto.randomUUID() //*1_Creamos la accion que va a modificar el estado en el reducer
+            return [...state, {id, ...action.payload}]
         }
     }
 })
 
 export default usersSlice.reducer;
 
-export const {deleteUserById} = usersSlice.actions; //exportamos la accion.
+export const {deleteUserById, addNewUser} = usersSlice.actions; //*2_ exportamos la accion. (la levantamos en userActions)
