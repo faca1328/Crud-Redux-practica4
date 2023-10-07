@@ -5,16 +5,11 @@ import usersReducer from "./users/slice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 
-
-
-
-
                             //Recupera la 'store' que devuelve una funcion que recupera el metodo 'next' y 'action'
 const dataStorageMiddleware: Middleware = (store) => (next) => (action) => {
     next(action); //Ejecutar la accion que modifica el estado
     localStorage.setItem("redux__State", JSON.stringify(store.getState())); // Guardarlo en el LS
 }
-
 
 
 export const store = configureStore({

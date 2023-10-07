@@ -43,7 +43,7 @@ const initialState: UserPlusID[] = (()=>{
     if (persistedState) {  //Si hay info en el LS lo mostramos, sino mostramos el 'defaultState'
         return JSON.parse(persistedState).users;
     }
-    return defaultState;
+    return defaultState;//(Podriamos usar un ternario tmb)
 })();
 
 
@@ -65,7 +65,10 @@ export const usersSlice = createSlice({
 
         addNewUser: (state, action:PayloadAction<User>) => { 
             const id = crypto.randomUUID() //*1_Creamos la accion que va a modificar el estado en el reducer
-            return [...state, {id, ...action.payload}]
+            state.push({id, ...action.payload})
+
+            //Con redux podemos 'MUTAR' los estados en vez de crear nuevos todo el tiempo como en el ejemplo de abajo.
+            //return [...state, {id, ...action.payload}]
         }
     }
 })
