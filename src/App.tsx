@@ -9,9 +9,9 @@ function App() {
 
   return (
     <>
-      <UserList />
-
       <CreateNewUser />
+
+      <UserList />
 
       <Toaster richColors/>
     </>
